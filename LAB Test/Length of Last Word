@@ -1,0 +1,7 @@
+def length_of_last_word(s):
+    s = s.rstrip()
+    words = s.split(' ')
+    last_word = words[-1]
+    return len(last_word)
+s = "Hello World   "
+print(length_of_last_word(s))  
