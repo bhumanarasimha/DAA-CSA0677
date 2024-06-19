@@ -1,0 +1,26 @@
+def countSubarraysWithMedian(nums, k):
+    n = len(nums)
+    prefix_counts = {0: 1}  # To handle subarrays starting from the beginning
+    prefix_sum = 0
+    count = 0
+    found_k = False
+
+    for num in nums:
+        if num > k:
+            prefix_sum += 1
+        elif num < k:
+            prefix_sum -= 1
+        else:
+            found_k = True
+        
+        if found_k:
+            count += prefix_counts.get(prefix_sum, 0)
+            count += prefix_counts.get(prefix_sum - 1, 0)
+        
+        if not found_k:
+            prefix_counts[prefix_sum] = prefix_counts.get(prefix_sum, 0) + 1
+
+    return count
+nums = [3, 2, 1, 4, 5]
+k = 4
+print(countSubarraysWithMedian(nums, k))  # Output: 3
