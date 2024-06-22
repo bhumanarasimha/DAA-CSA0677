@@ -1,0 +1,29 @@
+def container_loading(items, container_capacity):
+    containers = [[]]  # List of containers, each containing a list of items
+    containers_capacity = [container_capacity]  # Remaining capacity of each container
+
+    # Sort items by weight in descending order (FFD heuristic)
+    items.sort(reverse=True, key=lambda x: x[0])
+
+    for item_weight in items:
+        packed = False
+        for i in range(len(containers)):
+            if containers_capacity[i] >= item_weight:
+                containers[i].append(item_weight)
+                containers_capacity[i] -= item_weight
+                packed = True
+                break
+        if not packed:
+            containers.append([item_weight])
+            containers_capacity.append(container_capacity - item_weight)
+
+    return containers
+
+# Example usage:
+items = [8, 4, 2, 5, 2, 6, 7]  # Example weights of items
+container_capacity = 10  # Example capacity of each container
+
+packed_containers = container_loading(items, container_capacity)
+print("Packed Containers:")
+for i, container in enumerate(packed_containers):
+    print(f"Container {i + 1}: {container}")
