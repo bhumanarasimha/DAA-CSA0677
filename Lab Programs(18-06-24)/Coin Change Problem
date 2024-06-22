@@ -1,0 +1,16 @@
+def coin_change(amount, coins):
+    dp = [0] * (amount + 1)
+    dp[0] = 1  # Base case: 1 way to make amount 0 (by using no coins)
+
+    for coin in coins:
+        for j in range(coin, amount + 1):
+            dp[j] += dp[j - coin]
+
+    return dp[amount]
+
+# Example usage:
+amount = 5
+coins = [1, 2, 5]
+
+ways = coin_change(amount, coins)
+print(f"Number of ways to make change for {amount} using coins {coins}: {ways}")
