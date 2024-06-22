@@ -1,0 +1,46 @@
+import heapq
+import sys
+
+def prim_mst(graph):
+    n = len(graph)
+    min_heap = []
+    visited = [False] * n
+    mst_cost = 0
+    mst_edges = []
+    
+    # Start from vertex 0
+    heapq.heappush(min_heap, (0, 0))  # (weight, vertex)
+    
+    while min_heap:
+        weight, u = heapq.heappop(min_heap)
+        
+        if visited[u]:
+            continue
+        
+        visited[u] = True
+        mst_cost += weight
+        
+        if len(mst_edges) < n - 1:
+            mst_edges.append((u, weight))
+        
+        for v in range(n):
+            if graph[u][v] > 0 and not visited[v]:
+                heapq.heappush(min_heap, (graph[u][v], v))
+    
+    return mst_cost, mst_edges
+
+# Example usage:
+graph = [
+    [0, 2, 0, 6, 0],
+    [2, 0, 3, 8, 5],
+    [0, 3, 0, 0, 7],
+    [6, 8, 0, 0, 9],
+    [0, 5, 7, 9, 0]
+]
+
+mst_cost, mst_edges = prim_mst(graph)
+
+print(f"Minimum Spanning Tree Cost: {mst_cost}")
+print("Edges in Minimum Spanning Tree:")
+for edge in mst_edges:
+    print(edge)
