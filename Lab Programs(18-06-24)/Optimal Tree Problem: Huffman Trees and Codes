@@ -1,0 +1,56 @@
+import heapq
+from collections import defaultdict, namedtuple
+
+# Define a Node class for the Huffman Tree nodes
+class Node:
+    def __init__(self, symbol=None, frequency=0):
+        self.symbol = symbol
+        self.frequency = frequency
+        self.left = None
+        self.right = None
+    
+    # Define comparison operators for heap
+    def __lt__(self, other):
+        return self.frequency < other.frequency
+    
+    def __eq__(self, other):
+        return self.frequency == other.frequency
+
+# Function to build Huffman tree and generate codes
+def huffman_coding(freq):
+    # Initialize a min-heap of nodes
+    heap = []
+    for symbol, frequency in freq.items():
+        heapq.heappush(heap, Node(symbol, frequency))
+    
+    # Build Huffman tree
+    while len(heap) > 1:
+        left = heapq.heappop(heap)
+        right = heapq.heappop(heap)
+        merged = Node(frequency=left.frequency + right.frequency)
+        merged.left = left
+        merged.right = right
+        heapq.heappush(heap, merged)
+    
+    # Extract Huffman codes from the tree
+    codes = {}
+    def traverse(node, code):
+        if node.symbol:
+            codes[node.symbol] = code
+        else:
+            traverse(node.left, code + '0')
+            traverse(node.right, code + '1')
+    
+    if heap:
+        root = heapq.heappop(heap)
+        traverse(root, '')
+    
+    return codes
+
+# Example usage:
+symbol_freq = {'A': 5, 'B': 9, 'C': 12, 'D': 13, 'E': 16, 'F': 45}
+huffman_codes = huffman_coding(symbol_freq)
+
+print("Huffman Codes:")
+for symbol, code in sorted(huffman_codes.items()):
+    print(f"{symbol}: {code}")
