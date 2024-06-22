@@ -1,0 +1,47 @@
+import heapq
+from collections import defaultdict
+
+def dijkstra(graph, source):
+    # Number of vertices in the graph
+    vertices = len(graph)
+    
+    # Initialize distances from source to all other vertices as infinity
+    dist = {v: float('inf') for v in graph}
+    dist[source] = 0
+    
+    # Priority queue to store vertices and their distances
+    pq = [(0, source)]  # (distance, vertex)
+    
+    while pq:
+        # Extract the vertex with the smallest distance
+        current_dist, u = heapq.heappop(pq)
+        
+        # If the current distance is greater than the recorded distance, skip processing
+        if current_dist > dist[u]:
+            continue
+        
+        # Visit each neighbor of u
+        for v, weight in graph[u].items():
+            distance = current_dist + weight
+            
+            # If a shorter path to v is found through u, update dist[v] and push v to pq
+            if distance < dist[v]:
+                dist[v] = distance
+                heapq.heappush(pq, (distance, v))
+    
+    return dist
+
+# Example usage:
+graph = {
+    'A': {'B': 5, 'C': 1},
+    'B': {'A': 5, 'C': 2, 'D': 1},
+    'C': {'A': 1, 'B': 2, 'D': 4, 'E': 8},
+    'D': {'B': 1, 'C': 4, 'E': 3},
+    'E': {'C': 8, 'D': 3}
+}
+source = 'A'
+
+shortest_distances = dijkstra(graph, source)
+print("Shortest distances from source vertex", source)
+for vertex, distance in shortest_distances.items():
+    print(f"To vertex {vertex}: Distance = {distance}")
