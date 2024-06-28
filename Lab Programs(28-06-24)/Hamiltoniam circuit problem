@@ -1,0 +1,52 @@
+def is_valid(graph, path, pos, vertex):
+    # Check if the current vertex and last vertex in the path are adjacent
+    if graph[path[pos - 1]][vertex] == 0:
+        return False
+
+    # Check if the vertex has already been included in the path
+    if vertex in path:
+        return False
+
+    return True
+
+def hamiltonian_circuit_util(graph, path, pos):
+    # Base case: If all vertices are included in the path
+    if pos == len(graph):
+        # Check if there is an edge from the last vertex to the first vertex
+        return graph[path[pos - 1]][path[0]] == 1
+
+    for vertex in range(1, len(graph)):
+        if is_valid(graph, path, pos, vertex):
+            path[pos] = vertex
+
+            if hamiltonian_circuit_util(graph, path, pos + 1):
+                return True
+
+            # Backtrack
+            path[pos] = -1
+
+    return False
+
+def hamiltonian_circuit(graph):
+    path = [-1] * len(graph)
+    path[0] = 0  # Start at the first vertex
+
+    if hamiltonian_circuit_util(graph, path, 1):
+        return path + [path[0]]
+    else:
+        return None
+
+# Example usage:
+graph = [
+    [0, 1, 0, 1, 1],
+    [1, 0, 1, 1, 0],
+    [0, 1, 0, 1, 1],
+    [1, 1, 1, 0, 0],
+    [1, 0, 1, 0, 0]
+]
+
+solution = hamiltonian_circuit(graph)
+if solution:
+    print("Hamiltonian Circuit found:", solution)
+else:
+    print("No Hamiltonian Circuit exists")
