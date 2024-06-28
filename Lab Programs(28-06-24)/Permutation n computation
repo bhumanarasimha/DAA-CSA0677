@@ -1,0 +1,25 @@
+def permutations_recursive(elements):
+    if len(elements) == 0:
+        return []
+    if len(elements) == 1:
+        return [elements]
+
+    # Generate permutations for elements
+    perms = []
+    for i in range(len(elements)):
+        # Extract the current element
+        current = elements[i]
+        # Remaining elements
+        remaining = elements[:i] + elements[i+1:]
+
+        # Generate permutations of the remaining elements
+        for p in permutations_recursive(remaining):
+            perms.append([current] + p)
+    
+    return perms
+
+# Example usage:
+elements = [1, 2, 3]
+perms = permutations_recursive(elements)
+for perm in perms:
+    print(perm)
