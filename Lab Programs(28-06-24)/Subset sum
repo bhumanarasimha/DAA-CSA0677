@@ -1,0 +1,23 @@
+def subset_sum(nums, target):
+    def backtrack(start, current_sum, subset):
+        if current_sum == target:
+            result.append(list(subset))
+            return
+        if current_sum > target:
+            return
+
+        for i in range(start, len(nums)):
+            subset.append(nums[i])
+            backtrack(i + 1, current_sum + nums[i], subset)
+            subset.pop()  # backtrack
+
+    result = []
+    backtrack(0, 0, [])
+    return result
+
+# Example usage:
+nums = [3, 34, 4, 12, 5, 2]
+target = 9
+solutions = subset_sum(nums, target)
+for solution in solutions:
+    print(solution)
