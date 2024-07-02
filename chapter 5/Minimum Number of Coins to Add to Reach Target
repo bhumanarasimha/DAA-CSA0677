@@ -1,0 +1,28 @@
+def minCoinsToAdd(coins, target):
+    coins.sort()
+    current_sum = 0
+    added_coins = 0
+    
+    for coin in coins:
+        while current_sum + 1 < coin and current_sum + 1 <= target:
+            current_sum += current_sum + 1
+            added_coins += 1
+        
+        current_sum += coin
+        
+        if current_sum >= target:
+            break
+    
+    while current_sum < target:
+        current_sum += current_sum + 1
+        added_coins += 1
+    
+    return added_coins
+
+# Example usage
+coins1 = [1, 4, 10]
+target1 = 19
+coins2 = [1, 4, 10, 5, 7, 19]
+target2 = 19
+print(minCoinsToAdd(coins1, target1))  # Output: 2
+print(minCoinsToAdd(coins2, target2))  # Output: 1
