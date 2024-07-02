@@ -1,0 +1,66 @@
+def median_of_medians(arr, k):
+    # Helper function to find the median of a list
+    def median(lst):
+        n = len(lst)
+        lst.sort()
+        if n % 2 == 1:
+            return lst[n // 2]
+        else:
+            return (lst[n // 2 - 1] + lst[n // 2]) / 2
+    
+    # Helper function to partition the array around a pivot
+    def partition(arr, left, right, pivot_index):
+        pivot = arr[pivot_index]
+        arr[pivot_index], arr[right] = arr[right], arr[pivot_index]
+        store_index = left
+        for i in range(left, right):
+            if arr[i] < pivot:
+                arr[store_index], arr[i] = arr[i], arr[store_index]
+                store_index += 1
+        arr[right], arr[store_index] = arr[store_index], arr[right]
+        return store_index
+    
+    # Helper function to select the k-th smallest element
+    def select(arr, left, right, k):
+        if left == right:
+            return arr[left]
+        
+        # Divide the array into groups of 5
+        num_medians = (right - left + 1) // 5
+        medians = []
+        for i in range(num_medians + 1):
+            sub_left = left + 5 * i
+            sub_right = min(sub_left + 4, right)
+            sub_list = arr[sub_left:sub_right + 1]
+            medians.append(median(sub_list))
+        
+        # Find the median of the medians
+        median_of_medians = select(medians, 0, len(medians) - 1, len(medians) // 2)
+        
+        # Partition around the median of medians
+        pivot_index = arr.index(median_of_medians)
+        pivot_index = partition(arr, left, right, pivot_index)
+        
+        # Recur based on the position of the pivot
+        if k == pivot_index:
+            return arr[k]
+        elif k < pivot_index:
+            return select(arr, left, pivot_index - 1, k)
+        else:
+            return select(arr, pivot_index + 1, right, k)
+    
+    # Start the selection algorithm
+    return select(arr, 0, len(arr) - 1, k)
+
+# Test cases
+arr1 = [12, 3, 5, 7, 19]
+k1 = 2  # 2nd smallest element in 0-indexed is 5
+print(median_of_medians(arr1, k1))  # Expected Output: 5
+
+arr2 = [12, 3, 5, 7, 4, 19, 26]
+k2 = 3  # 3rd smallest element in 0-indexed is 5
+print(median_of_medians(arr2, k2))  # Expected Output: 5
+
+arr3 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+k3 = 6  # 6th smallest element in 0-indexed is 6
+print(median_of_medians(arr3, k3))  # Expected Output: 6
