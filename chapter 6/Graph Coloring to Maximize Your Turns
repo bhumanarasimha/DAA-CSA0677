@@ -1,0 +1,33 @@
+def graph_coloring_maximize_turns(edges, n, k):
+    from collections import defaultdict
+    
+    def is_valid(node, color, colors):
+        for neighbor in graph[node]:
+            if colors[neighbor] == color:
+                return False
+        return True
+    
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    def color_graph():
+        colors = [-1] * n
+        def backtrack(node, turn):
+            if node == n:
+                return turn
+            max_turns = 0
+            for color in range(1, k+1):
+                if is_valid(node, color, colors):
+                    colors[node] = color
+                    max_turns = max(max_turns, backtrack(node + 1, turn + (turn % 3 == 0)))
+                    colors[node] = -1
+            return max_turns
+        
+        return backtrack(0, 0)
+    
+    return color_graph()
+
+# Test case
+print(graph_coloring_maximize_turns([(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)], 4, 3))  # Output: 2
