@@ -1,0 +1,25 @@
+import numpy as np
+
+def min_production_time(station_times, transfer_times, dependencies):
+    num_lines = len(station_times)
+    num_stations = len(station_times[0])
+    
+    dp = np.full((num_lines, num_stations), float('inf'))
+    dp[0][0] = station_times[0][0]
+    
+    for i in range(1, num_stations):
+        for j in range(num_lines):
+            dp[j][i] = min(dp[j][i], dp[j][i-1] + station_times[j][i])
+            for k in range(num_lines):
+                if k != j:
+                    dp[j][i] = min(dp[j][i], dp[k][i-1] + transfer_times[k][j] + station_times[j][i])
+                    
+    min_time = min(dp[line][num_stations - 1] for line in range(num_lines))
+    return min_time
+
+# Test Case
+print(min_production_time(
+    [[5, 9, 3], [6, 8, 4], [7, 6, 5]], 
+    [[0, 2, 3], [2, 0, 4], [3, 4, 0]], 
+    [(0, 1), (1, 2)]
+))  # Output: 30
