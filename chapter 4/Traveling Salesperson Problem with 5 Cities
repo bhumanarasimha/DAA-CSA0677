@@ -1,0 +1,28 @@
+from itertools import permutations
+
+def tsp_bruteforce(dist):
+    n = len(dist)
+    min_path = float('inf')
+    min_route = []
+
+    for perm in permutations(range(n)):
+        cost = 0
+        for i in range(n):
+            cost += dist[perm[i]][perm[(i + 1) % n]]
+        if cost < min_path:
+            min_path = cost
+            min_route = perm
+
+    return min_path, min_route
+
+distances = [
+    [0, 10, 15, 20, 25],
+    [10, 0, 35, 25, 30],
+    [15, 35, 0, 30, 20],
+    [20, 25, 30, 0, 15],
+    [25, 30, 20, 15, 0]
+]
+
+path_cost, route = tsp_bruteforce(distances)
+print(f"The shortest path cost is {path_cost}")
+print(f"The shortest path route is {route}")
