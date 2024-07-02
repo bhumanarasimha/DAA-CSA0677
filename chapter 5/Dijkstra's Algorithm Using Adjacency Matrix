@@ -1,0 +1,25 @@
+import heapq
+
+def dijkstra(adj_matrix, source):
+    n = len(adj_matrix)
+    dist = [float('inf')] * n
+    dist[source] = 0
+    min_heap = [(0, source)]
+    
+    while min_heap:
+        current_dist, u = heapq.heappop(min_heap)
+        if current_dist > dist[u]:
+            continue
+        
+        for v in range(n):
+            if adj_matrix[u][v] < float('inf'):
+                new_dist = current_dist + adj_matrix[u][v]
+                if new_dist < dist[v]:
+                    dist[v] = new_dist
+                    heapq.heappush(min_heap, (new_dist, v))
+    
+    return dist
+
+# Test cases
+print(dijkstra([[0, 10, 3, float('inf'), float('inf')], [float('inf'), 0, 1, 2, float('inf')], [float('inf'), 4, 0, 8, 2], [float('inf'), float('inf'), float('inf'), 0, 7], [float('inf'), float('inf'), float('inf'), 9, 0]], 0))  # Output: [0, 7, 3, 9, 5]
+print(dijkstra([[0, 5, float('inf'), 10], [float('inf'), 0, 3, float('inf')], [float('inf'), float('inf'), 0, 1], [float('inf'), float('inf'), float('inf'), 0]], 0))  # Output: [0, 5, 8, 9]
