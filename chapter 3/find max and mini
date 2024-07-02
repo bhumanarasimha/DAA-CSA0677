@@ -1,0 +1,20 @@
+def find_max_min(arr):
+    if not arr:
+        return None, None  # If the array is empty, return None for both max and min
+    
+    max_val = arr[0]
+    min_val = arr[0]
+    
+    for num in arr[1:]:
+        if num > max_val:
+            max_val = num
+        if num < min_val:
+            min_val = num
+    
+    return max_val, min_val
+
+# Example usage
+array = [12, 45, 23, 67, 34, 89, 2, 10]
+max_value, min_value = find_max_min(array)
+print(f"Maximum value: {max_value}")  # Output: Maximum value: 89
+print(f"Minimum value: {min_value}")  # Output: Minimum value: 2
