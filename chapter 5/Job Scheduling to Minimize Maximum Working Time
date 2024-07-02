@@ -1,0 +1,32 @@
+def minimumTime(jobs, k):
+    def canDistribute(maxTime):
+        # Try to distribute jobs with the constraint that no worker exceeds maxTime
+        def backtrack(index, workers):
+            if index == len(jobs):
+                return True
+            for i in range(k):
+                if workers[i] + jobs[index] <= maxTime:
+                    workers[i] += jobs[index]
+                    if backtrack(index + 1, workers):
+                        return True
+                    workers[i] -= jobs[index]
+                if workers[i] == 0:
+                    break
+            return False
+
+        workers = [0] * k
+        return backtrack(0, workers)
+
+    left, right = max(jobs), sum(jobs)
+    while left < right:
+        mid = (left + right) // 2
+        if canDistribute(mid):
+            right = mid
+        else:
+            left = mid + 1
+
+    return left
+
+# Test cases
+print(minimumTime([3, 2, 3], 3))  # Output: 3
+print(minimumTime([1, 2, 4, 7, 8], 2))  # Output: 11
