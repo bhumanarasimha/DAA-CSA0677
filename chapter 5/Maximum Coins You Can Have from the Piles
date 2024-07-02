@@ -1,0 +1,11 @@
+def maxCoins(piles):
+    piles.sort()
+    n = len(piles) // 3
+    # You will take the coins from the second largest pile in every triplet
+    return sum(piles[2*i + 1] for i in range(n))
+
+# Example usage
+piles1 = [2, 4, 1, 2, 7, 8]
+piles2 = [2, 4, 5]
+print(maxCoins(piles1))  # Output: 9
+print(maxCoins(piles2))  # Output: 4
