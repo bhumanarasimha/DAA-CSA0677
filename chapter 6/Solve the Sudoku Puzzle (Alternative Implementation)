@@ -1,0 +1,38 @@
+def solve_sudoku_alternative(board):
+    def is_valid(board, r, c, num):
+        block_row, block_col = 3 * (r // 3), 3 * (c // 3)
+        for i in range(9):
+            if board[r][i] == num or board[i][c] == num:
+                return False
+            if board[block_row + i // 3][block_col + i % 3] == num:
+                return False
+        return True
+    
+    def solve(board):
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == '.':
+                    for num in '123456789':
+                        if is_valid(board, r, c, num):
+                            board[r][c] = num
+                            if solve(board):
+                                return True
+                            board[r][c] = '.'
+                    return False
+        return True
+    
+    solve(board)
+    return board
+
+# Test case
+print(solve_sudoku_alternative([
+    ["5","3",".",".","7",".",".",".","."],
+    ["6",".",".","1","9","5",".",".","."],
+    [".","9","8",".",".",".",".","6","."],
+    ["8",".",".",".","6",".",".",".","3"],
+    ["4",".",".","8",".","3",".",".","1"],
+    ["7",".",".",".","2",".",".",".","6"],
+    [".","6",".",".",".",".","2","8","."],
+    [".",".",".","4","1","9",".",".","5"],
+    [".",".",".",".","8",".",".","7","9"]
+]))
