@@ -1,0 +1,16 @@
+def decode_huffman(encoded_string, huffman_tree):
+    reverse_huffman_tree = {v: k for k, v in huffman_tree.items()}
+    current_code = ''
+    decoded_string = ''
+    
+    for bit in encoded_string:
+        current_code += bit
+        if current_code in reverse_huffman_tree:
+            decoded_string += reverse_huffman_tree[current_code]
+            current_code = ''
+    
+    return decoded_string
+
+# Test cases
+print(decode_huffman('1101100111110', {'c': '0', 'b': '10', 'a': '110', 'd': '111'}))  # Output: 'abacd'
+print(decode_huffman('110011011100101111001011', {'a': '0', 'b': '101', 'c': '100', 'd': '111', 'e': '1101', 'f': '1100'}))  # Output: 'fcbade'
