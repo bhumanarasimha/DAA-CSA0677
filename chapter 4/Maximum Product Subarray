@@ -1,0 +1,22 @@
+def max_product_subarray(nums):
+    if not nums:
+        return 0
+    
+    max_product = min_product = result = nums[0]
+    
+    for num in nums[1:]:
+        if num < 0:
+            max_product, min_product = min_product, max_product
+        
+        max_product = max(num, num * max_product)
+        min_product = min(num, num * min_product)
+        
+        result = max(result, max_product)
+    
+    return result
+
+# Test Case 1
+print(max_product_subarray([2, 3, -2, 4]))  # Output: 6
+
+# Test Case 2
+print(max_product_subarray([-2, 0, -1]))   # Output: 0
