@@ -1,0 +1,14 @@
+def find_max_min_sorted(arr):
+    if not arr:
+        return None, None  # If the array is empty, return None for both max and min
+    
+    min_val = arr[0]
+    max_val = arr[-1]
+    
+    return max_val, min_val
+
+# Example usage
+array = [2, 4, 6, 8, 10, 12, 14, 18]
+max_value, min_value = find_max_min_sorted(array)
+print(f"Minimum value: {min_value}")  # Output: Minimum value: 2
+print(f"Maximum value: {max_value}")  # Output: Maximum value: 18
