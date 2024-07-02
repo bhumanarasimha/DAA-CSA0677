@@ -1,0 +1,62 @@
+from itertools import combinations
+import bisect
+
+def generate_subset_sums(arr):
+    """Generate all possible subset sums for the given array."""
+    subset_sums = []
+    n = len(arr)
+    for i in range(n + 1):
+        for combo in combinations(arr, i):
+            subset_sums.append(sum(combo))
+    return subset_sums
+
+def meet_in_the_middle(arr, target):
+    """Find the subset whose sum is closest to the target using Meet in the Middle."""
+    n = len(arr)
+    mid = n // 2
+    
+    # Split array into two halves
+    left_half = arr[:mid]
+    right_half = arr[mid:]
+    
+    # Generate all subset sums for both halves
+    left_sums = generate_subset_sums(left_half)
+    right_sums = generate_subset_sums(right_half)
+    
+    # Sort the right sums for binary search
+    right_sums.sort()
+    
+    closest_sum = float('inf')
+    best_pair = (None, None)
+    
+    for l_sum in left_sums:
+        # Binary search for the closest sum in the right sums
+        low, high = 0, len(right_sums) - 1
+        while low <= high:
+            mid = (low + high) // 2
+            r_sum = right_sums[mid]
+            current_sum = l_sum + r_sum
+            
+            # Update the closest sum
+            if abs(current_sum - target) < abs(closest_sum - target):
+                closest_sum = current_sum
+                best_pair = (l_sum, r_sum)
+            
+            # Adjust the binary search range
+            if current_sum < target:
+                low = mid + 1
+            else:
+                high = mid - 1
+    
+    return closest_sum, best_pair
+
+# Test cases
+arr1 = [45, 34, 4, 12, 5, 2]
+target1 = 42
+closest_sum1, best_pair1 = meet_in_the_middle(arr1, target1)
+print(f"Closest sum to {target1} is {closest_sum1} with subset sums {best_pair1}")
+
+arr2 = [1, 3, 2, 7, 4, 6]
+target2 = 10
+closest_sum2, best_pair2 = meet_in_the_middle(arr2, target2)
+print(f"Closest sum to {target2} is {closest_sum2} with subset sums {best_pair2}")
