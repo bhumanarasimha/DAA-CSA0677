@@ -1,0 +1,9 @@
+keys = [10,12,16,21]
+freq = [4,2,6,3]
+cost, root = optimal_bst(keys, freq)
+
+print(f"OBST Cost: {cost[0][len(keys)-1]}")
+print("Cost Table:")
+print_matrix(cost)
+print("Root Table:")
+print_matrix(root)
