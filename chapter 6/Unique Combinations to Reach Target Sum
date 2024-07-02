@@ -1,0 +1,17 @@
+def combination_sum(candidates, target):
+    def backtrack(start, target, path):
+        if target == 0:
+            result.append(path)
+            return
+        for i in range(start, len(candidates)):
+            if candidates[i] > target:
+                continue
+            backtrack(i, target - candidates[i], path + [candidates[i]])
+    
+    result = []
+    backtrack(0, target, [])
+    return result
+
+# Test cases
+print(combination_sum([2, 3, 6, 7], 7))  # Output: [[2, 2, 3], [7]]
+print(combination_sum([2, 3, 5], 8))  # Output: [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
