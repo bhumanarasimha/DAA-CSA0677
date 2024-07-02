@@ -1,0 +1,17 @@
+n = 5
+edges = [[0,1,2],[0,4,8],[1,2,3],[1,4,2],[2,3,1],[3,4,1]]
+dist, _ = floyd_warshall(n, edges)
+
+def find_city_with_most_neighbors(dist, threshold):
+    max_neighbors = 0
+    best_city = -1
+    
+    for i in range(n):
+        count = sum(d <= threshold for d in dist[i])
+        if count >= max_neighbors:
+            max_neighbors = count
+            best_city = i
+    
+    return best_city
+
+print("City with the most neighbors under distance threshold 2:", find_city_with_most_neighbors(dist, 2))
