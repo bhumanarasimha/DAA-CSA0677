@@ -1,0 +1,41 @@
+import heapq
+from collections import Counter, defaultdict
+
+class TreeNode:
+    def __init__(self, char, freq):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+    def __lt__(self, other):
+        return self.freq < other.freq
+
+def huffman_codes(characters, frequencies):
+    heap = [TreeNode(char, freq) for char, freq in zip(characters, frequencies)]
+    heapq.heapify(heap)
+    
+    while len(heap) > 1:
+        left = heapq.heappop(heap)
+        right = heapq.heappop(heap)
+        merged = TreeNode(None, left.freq + right.freq)
+        merged.left = left
+        merged.right = right
+        heapq.heappush(heap, merged)
+    
+    root = heap[0]
+    codes = {}
+    
+    def generate_codes(node, path):
+        if node:
+            if node.char is not None:
+                codes[node.char] = path
+            generate_codes(node.left, path + '0')
+            generate_codes(node.right, path + '1')
+    
+    generate_codes(root, '')
+    return codes
+
+# Test cases
+print(huffman_codes(['a', 'b', 'c', 'd'], [5, 9, 12, 13]))  # Output: {'c': '0', 'b': '10', 'a': '110', 'd': '111'}
+print(huffman_codes(['f', 'e', 'd', 'c', 'b', 'a'], [5, 9, 12, 13, 16, 45]))  # Output: {'a': '0', 'b': '101', 'c': '100', 'd
