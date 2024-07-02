@@ -1,0 +1,19 @@
+def has_hamiltonian_cycle_simple(edges, n):
+    from itertools import permutations
+    
+    graph = {i: set() for i in range(n)}
+    for u, v in edges:
+        graph[u].add(v)
+        graph[v].add(u)
+    
+    def is_valid_cycle(perm):
+        return (perm[0] in graph[perm[-1]] and
+                all(perm[i] in graph[perm[i+1]] for i in range(n-1)))
+    
+    for perm in permutations(range(n)):
+        if is_valid_cycle(perm):
+            return True
+    return False
+
+# Test case
+print(has_hamiltonian_cycle_simple([(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)], 4))  # Output: True
