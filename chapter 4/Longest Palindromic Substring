@@ -1,0 +1,32 @@
+def longest_palindromic_substring(s):
+    n = len(s)
+    if n == 0:
+        return ""
+
+    start, max_len = 0, 1
+    
+    def expand_around_center(left, right):
+        while left >= 0 and right < n and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return left + 1, right - 1
+    
+    for i in range(n):
+        l1, r1 = expand_around_center(i, i)
+        l2, r2 = expand_around_center(i, i + 1)
+        
+        if r1 - l1 > max_len:
+            start, max_len = l1, r1 - l1 + 1
+        if r2 - l2 > max_len:
+            start, max_len = l2, r2 - l2 + 1
+    
+    return s[start:start + max_len]
+
+# Test Case 1
+print(longest_palindromic_substring("babad"))  # Output: "bab" or "aba"
+
+# Test Case 2
+print(longest_palindromic_substring("cbbd"))   # Output: "bb"
+
+# Test Case 3
+print(longest_palindromic_substring("a"))      # Output: "a"
