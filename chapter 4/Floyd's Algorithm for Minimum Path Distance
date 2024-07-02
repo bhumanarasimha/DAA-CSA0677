@@ -1,0 +1,26 @@
+def floyd_warshall(graph):
+    n = len(graph)
+    dist = np.array(graph)
+    
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    
+    return dist
+
+# Test Case 1
+graph1 = [[0,10,15,20],[10,0,35,25],[15,35,0,30],[20,25,30,0]]
+distances1 = floyd_warshall(graph1)
+print(np.min(distances1))  # Output: 80
+
+# Test Case 2
+graph2 = [[0,10,10,10],[10,0,10,10],[10,10,0,10],[10,10,10,0]]
+distances2 = floyd_warshall(graph2)
+print(np.min(distances2))  # Output: 40
+
+# Test Case 3
+graph3 = [[0,1,2,3],[1,0,4,5],[2,4,0,6],[3,5,6,0]]
+distances3 = floyd_warshall(graph3)
+print(distances3[0][3])  # Output: 12
