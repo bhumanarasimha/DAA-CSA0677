@@ -1,0 +1,42 @@
+def median_of_medians(arr, k):
+    def median(lst):
+        """Helper function to find the median of a list."""
+        lst.sort()
+        n = len(lst)
+        return lst[n // 2] if n % 2 == 1 else (lst[n // 2 - 1] + lst[n // 2]) // 2
+
+    def partition(arr, left, right, pivot_index):
+        """Partition the array around the pivot element."""
+        pivot = arr[pivot_index]
+        arr[pivot_index], arr[right] = arr[right], arr[pivot_index]
+        store_index = left
+        for i in range(left, right):
+            if arr[i] < pivot:
+                arr[store_index], arr[i] = arr[i], arr[store_index]
+                store_index += 1
+        arr[right], arr[store_index] = arr[store_index], arr[right]
+        return store_index
+
+    def select(arr, left, right, k):
+        """Recursive function to select the k-th smallest element."""
+        if left == right:
+            return arr[left]
+        
+        # Divide the array into sub-arrays of 5 elements
+        num_elements = right - left + 1
+        if num_elements <= 5:
+            sub_list = arr[left:right + 1]
+            return sorted(sub_list)[k - left]
+
+        # Find the medians of the sub-arrays
+        medians = []
+        for i in range(left, right + 1, 5):
+            sub_right = min(i + 4, right)
+            medians.append(median(arr[i:sub_right + 1]))
+
+        # The median of medians
+        pivot = select(medians, 0, len(medians) - 1, len(medians) // 2)
+        
+        # Partition the array around the median of medians
+        pivot_index = arr.index(pivot)
+        pivot_index = partition(arr, left,
